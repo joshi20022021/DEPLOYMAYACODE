@@ -943,33 +943,6 @@ const App = {
       <h2 class="confirm-title">¡Pedido realizado con éxito!</h2>
       <p class="confirm-subtitle">Gracias por tu compra. Recibirás una confirmación por correo electrónico.</p>
 
-      ${synced ? `
-      <div class="erp-banner">
-        <div class="erp-banner-icon">ERP</div>
-        <div>
-          <h4>Pedido registrado en ERP (Odoo)</h4>
-          <p>Tu orden local <strong>${order.id}</strong> quedó asociada al pedido de Odoo <strong>${saleOrderName}</strong>.
-          El flujo de ventas quedó activo para seguimiento en backoffice.</p>
-        </div>
-      </div>
-
-      <div class="erp-banner" style="background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#93c5fd">
-        <div class="erp-banner-icon">CRM</div>
-        <div>
-          <h4 style="color:#1e3a8a">Cliente y oportunidad registrados en CRM</h4>
-          <p style="color:#1e40af">El cliente fue identificado en Odoo y se creó una oportunidad comercial para seguimiento de postventa.</p>
-        </div>
-      </div>
-      ` : `
-      <div class="erp-banner" style="background:linear-gradient(135deg,#fff7ed,#ffedd5);border-color:#fdba74">
-        <div class="erp-banner-icon" style="background:#fb923c">AV</div>
-        <div>
-          <h4 style="color:#9a3412">Pedido guardado localmente</h4>
-          <p style="color:#9a3412">No se pudo sincronizar con Odoo en este momento.
-          ${syncError ? `Detalle: ${syncError}.` : ''} Puedes reintentar cuando el bridge esté activo.</p>
-        </div>
-      </div>
-      `}
 
       <div class="confirm-card">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem">
