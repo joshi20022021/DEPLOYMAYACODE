@@ -1227,12 +1227,6 @@ const App = {
         </div>`;
       }).join('');
 
-      // Integración ERP visual
-      container.innerHTML += `
-        <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:1rem;margin-top:1rem;font-size:.82rem;color:#166534">
-          <strong>Sincronización ERP activa</strong> — Todos tus pedidos están sincronizados con Odoo en tiempo real.
-          El equipo de logística puede ver y procesar tus órdenes desde el panel de administración.
-        </div>`;
     }
 
     if (tab === 'profile') {
