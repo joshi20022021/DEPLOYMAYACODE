@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MayaCode S.A. — Tecnología profesional en tu puerta</title>
+  <meta name="description" content="MayaCode: tu tienda de tecnología en Guatemala. Laptops, monitores, accesorios y más con envío a todo el país.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════
+     NAVBAR
+═══════════════════════════════════════════════════════ -->
+<nav id="navbar">
+  <div class="navbar-inner">
+    <!-- Logo -->
+    <div class="brand" id="nav-logo">
+      <div class="brand-logo">MC</div>
+      <div>
+        <div class="brand-name">MayaCode</div>
+        <div class="brand-tagline">Tecnología para Guatemala</div>
+      </div>
+    </div>
+
+    <!-- Barra de búsqueda -->
+    <div class="search-bar">
+      <select id="search-category">
+        <option value="all">Todas</option>
+        <option value="laptops">Laptops</option>
+        <option value="monitores">Monitores</option>
+        <option value="teclados">Teclados</option>
+        <option value="mouse">Mouse</option>
+        <option value="auriculares">Auriculares</option>
+        <option value="webcams">Webcams</option>
+        <option value="hubs-cables">Hubs & Cables</option>
+        <option value="ssd-externos">SSD Externos</option>
+        <option value="memorias-ram">Memorias RAM</option>
+        <option value="impresoras">Impresoras</option>
+        <option value="tablets">Tablets</option>
+      </select>
+      <input type="text" id="search-input" placeholder="Buscar laptops, monitores, teclados...">
+      <button class="search-btn" id="search-submit">Buscar</button>
+    </div>
+
+    <!-- Acciones nav -->
+    <div class="nav-actions">
+      <button class="nav-btn" id="nav-catalog"><span>Catálogo</span></button>
+      <button class="nav-btn" id="nav-quote"><span>Cotizar</span></button>
+      <button class="nav-btn" id="nav-portal-btn" style="display:none"><span>Portal</span></button>
+      <button class="nav-btn" id="nav-user">
+        <span id="nav-user-icon"></span>
+        <span id="nav-user-name">Ingresar</span>
+      </button>
+      <button class="nav-btn cart-badge-wrap" id="nav-cart">
+        <span>Carrito</span>
+        <span id="cart-count" class="cart-badge" style="display:none">0</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════
+     TOAST CONTAINER
+═══════════════════════════════════════════════════════ -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- ═══════════════════════════════════════════════════════
+     VISTA: HOME
+═══════════════════════════════════════════════════════ -->
+<div id="view-home" data-view>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:2rem;flex-wrap:wrap">
+        <div>
+          <p style="color:#93c5fd;font-size:.85rem;font-weight:600;margin-bottom:.5rem;letter-spacing:.08em">TIENDA TECNOLÓGICA N°1 EN GUATEMALA</p>
+          <h1>Tecnología profesional<br><span>lista cuando la necesitas</span></h1>
+          <p>Laptops, monitores, accesorios y más. Envío a toda la república. Garantía oficial en todos los productos.</p>
+          <div class="hero-btns">
+            <button class="btn-primary" onclick="App.navigate('catalog')">Ver catálogo completo</button>
+            <button class="btn-outline" onclick="App.navigate('quote')">Solicitar cotización</button>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat"><strong>30+</strong><span>Productos</span></div>
+            <div class="hero-stat"><strong>11</strong><span>Categorías</span></div>
+            <div class="hero-stat"><strong>24h</strong><span>Envío express</span></div>
+            <div class="hero-stat"><strong>100%</strong><span>Garantía</span></div>
+          </div>
+        </div>
+        <div style="display:none" class="hero-image-placeholder"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categorías -->
+  <section class="section" style="padding-bottom:1rem">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Explora por categoría</h2>
+        <span class="see-all">Ver todo →</span>
+      </div>
+      <div class="categories-grid">
+        <div class="category-card home-category-card" data-cat="laptops">
+          <div class="category-icon">💻</div>
+          <div class="category-label">Laptops</div>
+        </div>
+        <div class="category-card home-category-card" data-cat="monitores">
+          <div class="category-icon">🖥️</div>
+          <div class="category-label">Monitores</div>
+        </div>
+        <div class="category-card home-category-card" data-cat="teclados">
+          <div class="category-icon">⌨️</div>
+          <div class="category-label">Teclados</div>
+        </div>
+        <div class="category-card home-category-card" data-cat="mouse">
+          <div class="category-icon">🖱️</div>
+          <div class="category-label">Mouse</div>
+        </div>
+        <div class="category-card home-category-card" data-cat="auriculares">
+          <div class="category-icon">🎧</div>
+          <div class="category-label">Auriculares</div>
+        </div>
+        <div class="category-card home-category-card" data-cat="webcams">
+          <div class="category-icon">📷</div>
+          <div class="category-label">Webcams</div>
+        </div>
+        <div class="category-card home-category-card" data-cat="hubs-cables">
+          <div class="category-icon">🔌</div>
+          <div class="category-label">Hubs & Cables</div>
+        </div>
+        <div class="category-card home-category-card" data-cat="ssd-externos">
+          <div class="category-icon">💾</div>
+          <div class="category-label">SSD Externos</div>
+        </div>
+        <div class="category-card home-category-card" data-cat="memorias-ram">
+          <div class="category-icon">🧠</div>
+          <div class="category-label">Memorias RAM</div>
+        </div>
+        <div class="category-card home-category-card" data-cat="impresoras">
+          <div class="category-icon">🖨️</div>
+          <div class="category-label">Impresoras</div>
+        </div>
+        <div class="category-card home-category-card" data-cat="tablets">
+          <div class="category-icon">📱</div>
+          <div class="category-label">Tablets</div>
+        </div>
+        <div class="category-card home-category-card" data-cat="all" style="border-color:var(--gold)">
+          <div class="category-icon">🛒</div>
+          <div class="category-label" style="color:var(--gold)">Ver todo</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Banner promo -->
+  <section style="padding:1rem 0">
+    <div class="container">
+      <div class="promo-banner">
+        <div>
+          <h3>Envío gratis en compras mayores a Q500</h3>
+          <p>Aplica para toda la zona metropolitana de Guatemala. Entregas en 24-48 horas hábiles.</p>
+        </div>
+        <button class="btn-primary" style="background:white;color:var(--gold);flex-shrink:0"
+          onclick="App.navigate('catalog')">
+          Comprar ahora
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Productos destacados -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Productos destacados</h2>
+        <span class="see-all" onclick="App.state.category='all';App.navigate('catalog')">Ver todos →</span>
+      </div>
+      <div class="products-grid" id="home-featured-grid">
+        <!-- Renderizado por JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Ofertas -->
+  <section class="section" style="background:white;margin:0">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" style="color:var(--red)">Ofertas especiales</h2>
+        <span class="see-all" onclick="App.navigate('catalog')">Ver todas →</span>
+      </div>
+      <div class="products-grid" id="home-offers-grid">
+        <!-- Renderizado por JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Banner beneficios -->
+  <section class="section">
+    <div class="container">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.25rem">
+        <div style="background:white;border-radius:var(--radius);padding:1.5rem;text-align:center;box-shadow:var(--shadow-sm)">
+          <div style="font-size:2.5rem;margin-bottom:.5rem">SSL</div>
+          <h4 style="font-weight:700;color:var(--blue-dark);margin-bottom:.25rem">Compra segura</h4>
+          <p style="font-size:.82rem;color:var(--gray-600)">Tus datos y pagos están protegidos con cifrado SSL</p>
+        </div>
+        <div style="background:white;border-radius:var(--radius);padding:1.5rem;text-align:center;box-shadow:var(--shadow-sm)">
+          <div style="font-size:2.5rem;margin-bottom:.5rem">24h</div>
+          <h4 style="font-weight:700;color:var(--blue-dark);margin-bottom:.25rem">Envío rápido</h4>
+          <p style="font-size:.82rem;color:var(--gray-600)">Entregamos en 24-48h en zona metropolitana</p>
+        </div>
+        <div style="background:white;border-radius:var(--radius);padding:1.5rem;text-align:center;box-shadow:var(--shadow-sm)">
+          <div style="font-size:2.5rem;margin-bottom:.5rem">GAR</div>
+          <h4 style="font-weight:700;color:var(--blue-dark);margin-bottom:.25rem">Garantía oficial</h4>
+          <p style="font-size:.82rem;color:var(--gray-600)">Todos los productos con garantía del fabricante</p>
+        </div>
+        <div style="background:white;border-radius:var(--radius);padding:1.5rem;text-align:center;box-shadow:var(--shadow-sm)">
+          <div style="font-size:2.5rem;margin-bottom:.5rem">SOP</div>
+          <h4 style="font-weight:700;color:var(--blue-dark);margin-bottom:.25rem">Soporte 24/7</h4>
+          <p style="font-size:.82rem;color:var(--gray-600)">Atención al cliente por WhatsApp y correo</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.75rem">
+          <div class="brand-logo">MC</div>
+          <div>
+            <div style="font-weight:700;font-size:1.1rem">MayaCode S.A.</div>
+            <div style="font-size:.7rem;color:#93c5fd">Tecnología profesional en tu puerta</div>
+          </div>
+        </div>
+        <p>Tu tienda tecnológica de confianza en Guatemala. Productos de calidad con garantía oficial y envío a toda la república.</p>
+        <div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap">
+          <span class="erp-badge">Powered by Odoo ERP</span>
+          <span class="erp-badge">CRM Integrado</span>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Productos</h4>
+        <ul>
+          <li onclick="App.state.category='laptops';App.navigate('catalog')">Laptops</li>
+          <li onclick="App.state.category='monitores';App.navigate('catalog')">Monitores</li>
+          <li onclick="App.state.category='teclados';App.navigate('catalog')">Teclados</li>
+          <li onclick="App.state.category='auriculares';App.navigate('catalog')">Auriculares</li>
+          <li onclick="App.navigate('catalog')">Ver todo el catálogo</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Empresa</h4>
+        <ul>
+          <li>Nosotros</li>
+          <li>Blog tecnológico</li>
+          <li>Trabaja con nosotros</li>
+          <li onclick="App.navigate('quote')">Cotizaciones</li>
+          <li>Garantías</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <ul>
+          <li>Ciudad de Guatemala</li>
+          <li>+502 2555-1234</li>
+          <li>info@mayacode.gt</li>
+          <li>L-V 8am–6pm</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 MayaCode S.A. — Todos los derechos reservados</span>
+      <span>Proyecto académico · Simulación de transformación digital</span>
+    </div>
+  </footer>
+
+</div><!-- /view-home -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     VISTA: CATÁLOGO
+═══════════════════════════════════════════════════════ -->
+<div id="view-catalog" data-view class="hidden">
+  <div style="max-width:1200px;margin:0 auto;padding:1.5rem 1rem">
+
+    <div class="catalog-header">
+      <h1 class="catalog-title">Catálogo de productos</h1>
+      <span class="results-count" id="catalog-results-count">30 productos encontrados</span>
+    </div>
+
+    <!-- Filtros de categoría -->
+    <div class="catalog-filters">
+      <button class="filter-chip active" data-cat="all">Todos</button>
+      <button class="filter-chip" data-cat="laptops">💻 Laptops</button>
+      <button class="filter-chip" data-cat="monitores">🖥️ Monitores</button>
+      <button class="filter-chip" data-cat="teclados">⌨️ Teclados</button>
+      <button class="filter-chip" data-cat="mouse">🖱️ Mouse</button>
+      <button class="filter-chip" data-cat="auriculares">🎧 Auriculares</button>
+      <button class="filter-chip" data-cat="webcams">📷 Webcams</button>
+      <button class="filter-chip" data-cat="hubs-cables">🔌 Hubs & Cables</button>
+      <button class="filter-chip" data-cat="ssd-externos">💾 SSD Externos</button>
+      <button class="filter-chip" data-cat="memorias-ram">🧠 Memorias RAM</button>
+      <button class="filter-chip" data-cat="impresoras">🖨️ Impresoras</button>
+      <button class="filter-chip" data-cat="tablets">📱 Tablets</button>
+    </div>
+
+    <div class="products-grid" id="catalog-grid">
+      <!-- Renderizado por JS -->
+    </div>
+  </div>
+</div><!-- /view-catalog -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     VISTA: DETALLE DE PRODUCTO
+═══════════════════════════════════════════════════════ -->
+<div id="view-product" data-view class="hidden">
+  <div id="product-detail-content" style="max-width:1200px;margin:0 auto;padding:1.5rem 1rem">
+    <!-- Renderizado por JS -->
+  </div>
+
+  <!-- Productos relacionados -->
+  <div style="max-width:1200px;margin:0 auto;padding:0 1rem 2rem">
+    <div class="section-header" style="margin-bottom:1.25rem">
+      <h2 class="section-title">Productos relacionados</h2>
+    </div>
+    <div class="products-grid" id="related-grid"></div>
+  </div>
+</div><!-- /view-product -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     VISTA: CARRITO
+═══════════════════════════════════════════════════════ -->
+<div id="view-cart" data-view class="hidden">
+  <div style="max-width:1200px;margin:0 auto;padding:1.5rem 1rem">
+    <h1 class="page-heading">Mi carrito</h1>
+    <div id="cart-content"><!-- Renderizado por JS --></div>
+  </div>
+</div><!-- /view-cart -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     VISTA: CHECKOUT
+═══════════════════════════════════════════════════════ -->
+<div id="view-checkout" data-view class="hidden">
+  <div style="max-width:860px;margin:0 auto;padding:1.5rem 1rem">
+    <h1 class="page-heading">Finalizar compra</h1>
+
+    <!-- Indicador de pasos -->
+    <div class="checkout-steps">
+      <div class="checkout-step active" data-step="1">
+        <div class="step-num">1</div>
+        <div class="step-label">Resumen</div>
+      </div>
+      <div class="checkout-step" data-step="2">
+        <div class="step-num">2</div>
+        <div class="step-label">Envío</div>
+      </div>
+      <div class="checkout-step" data-step="3">
+        <div class="step-num">3</div>
+        <div class="step-label">Pago</div>
+      </div>
+    </div>
+
+    <!-- Contenido de cada paso -->
+    <div id="step1"><div id="step1-content"></div></div>
+    <div id="step2" class="hidden"><div id="step2-content"></div></div>
+    <div id="step3" class="hidden"><div id="step3-content"></div></div>
+  </div>
+</div><!-- /view-checkout -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     VISTA: CONFIRMACIÓN
+═══════════════════════════════════════════════════════ -->
+<div id="view-confirmation" data-view class="hidden">
+  <div style="max-width:700px;margin:0 auto;padding:2rem 1rem">
+    <div id="confirmation-content"><!-- Renderizado por JS --></div>
+  </div>
+</div><!-- /view-confirmation -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     VISTA: LOGIN / REGISTRO (comparten contenedor)
+═══════════════════════════════════════════════════════ -->
+<div id="view-login" data-view class="hidden">
+  <div id="auth-content"><!-- Renderizado por JS --></div>
+</div>
+
+<!-- view-register apunta al mismo contenedor; app.js lo redirige a view-login con contenido de registro -->
+<div id="view-register" data-view class="hidden" style="display:none!important"></div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     VISTA: PORTAL DEL CLIENTE
+═══════════════════════════════════════════════════════ -->
+<div id="view-portal" data-view class="hidden">
+  <div style="max-width:900px;margin:0 auto;padding:1.5rem 1rem">
+    <div id="portal-header"></div>
+
+    <div class="portal-tabs">
+      <button class="portal-tab active" data-tab="orders">Mis pedidos</button>
+      <button class="portal-tab" data-tab="profile">Mi perfil</button>
+      <button class="portal-tab" data-tab="wishlist">Lista de deseos</button>
+    </div>
+
+    <div id="portal-tab-content"><!-- Renderizado por JS --></div>
+  </div>
+</div><!-- /view-portal -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     VISTA: COTIZACIÓN
+═══════════════════════════════════════════════════════ -->
+<div id="view-quote" data-view class="hidden">
+  <div style="max-width:700px;margin:0 auto;padding:1.5rem 1rem">
+    <h1 class="page-heading">Cotización de productos</h1>
+    <div id="quote-content"><!-- Renderizado por JS --></div>
+  </div>
+</div><!-- /view-quote -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     SCRIPTS
+═══════════════════════════════════════════════════════ -->
+<script src="products.js"></script>
+<script src="app.js"></script>
+
+
+</body>
+</html>
