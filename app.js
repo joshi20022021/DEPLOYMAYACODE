@@ -66,7 +66,11 @@ const App = {
   saveOrders() { localStorage.setItem('mc_orders', JSON.stringify(this.state.orders)); },
 
   getBridgeUrl() {
-    return (localStorage.getItem('mc_odoo_bridge_url') || 'http://localhost:8088').replace(/\/$/, '');
+    const saved = localStorage.getItem('mc_odoo_bridge_url');
+    if (saved) return saved.replace(/\/$/, '');
+    // Si se sirve desde el bridge server mismo, usar mismo origin
+    if (location.protocol !== 'file:') return location.origin.replace(/\/$/, '');
+    return 'http://localhost:8088';
   },
 
   async callBridge(endpoint, payload = {}) {
