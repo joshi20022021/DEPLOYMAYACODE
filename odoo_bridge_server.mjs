@@ -148,6 +148,67 @@ async function findProductVariant(item) {
   return null;
 }
 
+const CATEGORY_MAP = {
+  "laptops":        "laptops",
+  "monitores":      "monitores",
+  "teclados":       "teclados",
+  "mouse":          "mouse",
+  "auriculares":    "auriculares",
+  "webcams":        "webcams",
+  "hubs":           "hubs-cables",
+  "cables":         "hubs-cables",
+  "almacenamiento": "ssd-externos",
+  "ssd":            "ssd-externos",
+  "memorias":       "memorias-ram",
+  "ram":            "memorias-ram",
+  "impresoras":     "impresoras",
+  "tablets":        "tablets",
+  "redes":          "redes",
+  "perifericos":    "perifericos",
+  "accesorios":     "accesorios",
+};
+
+function mapCategory(odooCategory) {
+  if (!odooCategory) return "accesorios";
+  const lower = odooCategory.toLowerCase();
+  for (const [key, val] of Object.entries(CATEGORY_MAP)) {
+    if (lower.includes(key)) return val;
+  }
+  return lower.replace(/\s+/g, "-");
+}
+
+async function getProducts() {
+  const fields = ["id", "name", "list_price", "standard_price", "categ_id", "description_sale", "default_code", "active"];
+  const records = await executeKw(
+    "product.template",
+    "search_read",
+    [[["active", "=", true], ["sale_ok", "=", true]]],
+    { fields, order: "categ_id asc, name asc", limit: 200 }
+  );
+
+  return records.map((r, idx) => ({
+    id: r.id,
+    name: r.name,
+    sku: r.default_code || `MAYA-${String(r.id).padStart(4, "0")}`,
+    category: mapCategory(r.categ_id?.[1] || ""),
+    price: r.list_price || 0,
+    oldPrice: null,
+    stock: 10,
+    badge: idx < 8 ? "Odoo" : null,
+    rating: 4.5,
+    reviews: 0,
+    description: r.description_sale || r.name,
+    fullDescription: r.description_sale || r.name,
+    specs: [],
+    image: `${CONFIG.odooUrl}/web/image/product.template/${r.id}/image_512`,
+  }));
+}
+
+async function handleGetProducts(res) {
+  const products = await getProducts();
+  sendJson(res, 200, { ok: true, products });
+}
+
 function paymentLabel(payment) {
   if (payment === "transfer") return "Transferencia bancaria";
   if (payment === "delivery") return "Pago contra entrega";
@@ -325,6 +386,11 @@ const server = http.createServer(async (req, res) => {
 
     if (req.method === "GET" && url.pathname === "/health") {
       await handleHealth(res);
+      return;
+    }
+
+    if (req.method === "GET" && url.pathname === "/api/products") {
+      await handleGetProducts(res);
       return;
     }
 

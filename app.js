@@ -22,6 +22,24 @@ const App = {
     lastQuoteSync: null,
   },
 
+  /* ─── CATÁLOGO DINÁMICO ─────────────────────────────── */
+  catalog: [...(typeof PRODUCTS !== 'undefined' ? PRODUCTS : [])],
+
+  async loadCatalogFromOdoo() {
+    try {
+      const url = `${this.getBridgeUrl()}/api/products`;
+      const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data.ok && Array.isArray(data.products) && data.products.length > 0) {
+        this.catalog = data.products;
+        this.renderFeaturedProducts();
+        this.renderOffersSection();
+        if (this.state.view === 'catalog') this.renderCatalog();
+      }
+    } catch (_) { /* bridge no disponible, usa catálogo estático */ }
+  },
+
   /* ─── INIT ───────────────────────────────────────────── */
   init() {
     this.loadFromStorage();
@@ -29,6 +47,7 @@ const App = {
     this.bindNavEvents();
     this.navigate('home');
     this.updateCartBadge();
+    this.loadCatalogFromOdoo();
   },
 
   loadFromStorage() {
@@ -258,13 +277,13 @@ const App = {
   },
 
   renderFeaturedProducts() {
-    const featured = PRODUCTS.filter(p => p.badge).slice(0, 8);
+    const featured = this.catalog.filter(p => p.badge).slice(0, 8);
     const grid = document.getElementById('home-featured-grid');
     if (grid) grid.innerHTML = featured.map(p => this.productCardHTML(p)).join('');
   },
 
   renderOffersSection() {
-    const offers = PRODUCTS.filter(p => p.oldPrice).slice(0, 4);
+    const offers = this.catalog.filter(p => p.oldPrice).slice(0, 4);
     const grid = document.getElementById('home-offers-grid');
     if (grid) grid.innerHTML = offers.map(p => this.productCardHTML(p)).join('');
   },
@@ -294,7 +313,7 @@ const App = {
     document.getElementById('search-category').value = this.state.category;
 
     // Filtrar
-    let filtered = PRODUCTS;
+    let filtered = this.catalog;
     if (this.state.category !== 'all') {
       filtered = filtered.filter(p => p.category === this.state.category);
     }
@@ -384,7 +403,7 @@ const App = {
       card.addEventListener('click', e => {
         if (!e.target.closest('.btn-add-cart')) {
           const pid = parseInt(card.dataset.pid);
-          const product = PRODUCTS.find(p => p.id === pid);
+          const product = App.catalog.find(p => p.id === pid);
           if (product) {
             this.state.currentProduct = product;
             this.state.detailQty = 1;
@@ -398,7 +417,7 @@ const App = {
       btn.addEventListener('click', e => {
         e.stopPropagation();
         const pid = parseInt(btn.dataset.pid);
-        const product = PRODUCTS.find(p => p.id === pid);
+        const product = App.catalog.find(p => p.id === pid);
         if (product) {
           this.addToCart(product, 1);
           btn.classList.add('added');
@@ -499,7 +518,7 @@ const App = {
     });
 
     // También renderizar productos relacionados
-    const related = PRODUCTS.filter(rp => rp.category === p.category && rp.id !== p.id).slice(0, 4);
+    const related = App.catalog.filter(rp => rp.category === p.category && rp.id !== p.id).slice(0, 4);
     const relGrid = document.getElementById('related-grid');
     if (relGrid) {
       relGrid.innerHTML = related.map(rp => this.productCardHTML(rp)).join('');
@@ -1303,7 +1322,7 @@ const App = {
       return;
     }
 
-    const productOptions = PRODUCTS.map(p =>
+    const productOptions = App.catalog.map(p =>
       `<option value="${p.id}">${p.name} — Q${p.price.toLocaleString('es-GT')}</option>`
     ).join('');
 
@@ -1379,7 +1398,7 @@ const App = {
       return;
     }
 
-    const selectedProduct = PRODUCTS.find(p => p.id === Number(prod));
+    const selectedProduct = App.catalog.find(p => p.id === Number(prod));
     this.state.lastQuoteSync = await this.syncQuoteToOdoo({
       name,
       email,
