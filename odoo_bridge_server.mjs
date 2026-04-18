@@ -148,6 +148,23 @@ async function findProductVariant(item) {
   return null;
 }
 
+const FALLBACK_IMAGES = {
+  "laptops":      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&auto=format&fit=crop",
+  "monitores":    "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600&auto=format&fit=crop",
+  "teclados":     "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600&auto=format&fit=crop",
+  "mouse":        "https://images.unsplash.com/photo-1527814050087-3793815479db?w=600&auto=format&fit=crop",
+  "auriculares":  "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop",
+  "webcams":      "https://images.unsplash.com/photo-1622957461168-6cee4ad13571?w=600&auto=format&fit=crop",
+  "hubs-cables":  "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&auto=format&fit=crop",
+  "ssd-externos": "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=600&auto=format&fit=crop",
+  "memorias-ram": "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600&auto=format&fit=crop",
+  "impresoras":   "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=600&auto=format&fit=crop",
+  "tablets":      "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&auto=format&fit=crop",
+  "redes":        "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&auto=format&fit=crop",
+  "perifericos":  "https://images.unsplash.com/photo-1527814050087-3793815479db?w=600&auto=format&fit=crop",
+  "accesorios":   "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600&auto=format&fit=crop",
+};
+
 const CATEGORY_MAP = {
   "laptops":        "laptops",
   "monitores":      "monitores",
@@ -178,7 +195,7 @@ function mapCategory(odooCategory) {
 }
 
 async function getProducts() {
-  const fields = ["id", "name", "list_price", "standard_price", "categ_id", "description_sale", "default_code", "active"];
+  const fields = ["id", "name", "list_price", "categ_id", "description_sale", "default_code", "image_128"];
   const records = await executeKw(
     "product.template",
     "search_read",
@@ -186,22 +203,30 @@ async function getProducts() {
     { fields, order: "categ_id asc, name asc", limit: 200 }
   );
 
-  return records.map((r, idx) => ({
-    id: r.id,
-    name: r.name,
-    sku: r.default_code || `MAYA-${String(r.id).padStart(4, "0")}`,
-    category: mapCategory(r.categ_id?.[1] || ""),
-    price: r.list_price || 0,
-    oldPrice: null,
-    stock: 10,
-    badge: idx < 8 ? "Odoo" : null,
-    rating: 4.5,
-    reviews: 0,
-    description: r.description_sale || r.name,
-    fullDescription: r.description_sale || r.name,
-    specs: [],
-    image: `${CONFIG.odooUrl}/web/image/product.template/${r.id}/image_512`,
-  }));
+  return records.map((r, idx) => {
+    const category = mapCategory(r.categ_id?.[1] || "");
+    const hasImage = r.image_128 && r.image_128 !== false;
+    const image = hasImage
+      ? `${CONFIG.odooUrl}/web/image/product.template/${r.id}/image_512`
+      : (FALLBACK_IMAGES[category] || FALLBACK_IMAGES["accesorios"]);
+
+    return {
+      id: r.id,
+      name: r.name,
+      sku: r.default_code || `MAYA-${String(r.id).padStart(4, "0")}`,
+      category,
+      price: r.list_price || 0,
+      oldPrice: null,
+      stock: 10,
+      badge: idx < 8 ? "Nuevo" : null,
+      rating: 4.5,
+      reviews: 0,
+      description: r.description_sale || r.name,
+      fullDescription: r.description_sale || r.name,
+      specs: [],
+      image,
+    };
+  });
 }
 
 async function handleGetProducts(res) {
